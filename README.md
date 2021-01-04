@@ -1,15 +1,14 @@
 # webfonts-generator
 
-
 [![Build Status](https://travis-ci.org/sunflowerdeath/webfonts-generator.svg?branch=master)](https://travis-ci.org/sunflowerdeath/webfonts-generator)
 
 Generator of webfonts from SVG icons.
 
 Features:
 
-* Supported font formats: WOFF2, WOFF, EOT, TTF and SVG.
-* Supported browsers: IE8+.
-* Generates CSS files and HTML preview, allows to use custom templates.
+- Supported font formats: WOFF2, WOFF, EOT, TTF and SVG.
+- Supported browsers: IE8+.
+- Generates CSS files and HTML preview, allows to use custom templates.
 
 ## Install
 
@@ -20,21 +19,21 @@ npm install --save-dev webfonts-generator
 ## Usage
 
 ```js
-const webfontsGenerator = require('webfonts-generator');
+const webfontsGenerator = require('webfonts-generator')
 
-webfontsGenerator({
-  files: [
-    'src/dropdown.svg',
-    'src/close.svg',
-  ],
-  dest: 'dest/',
-}, function(error) {
-  if (error) {
-    console.log('Fail!', error);
-  } else {
-    console.log('Done!');
+webfontsGenerator(
+  {
+    files: ['src/dropdown.svg', 'src/close.svg'],
+    dest: 'dest/',
+  },
+  function (error) {
+    if (error) {
+      console.log('Fail!', error)
+    } else {
+      console.log('Done!')
+    }
   }
-})
+)
 ```
 
 ## webfontsGenerator(options, done)
@@ -51,9 +50,15 @@ Type: `function(error, result)`
 
 ## List of options
 
+### disableHash
+
+Type: `boolean`
+
+Whether a content hash should be added to the css file references
+
 ### files
 
-*required*
+_required_
 
 Type: `array.<string>`
 
@@ -61,7 +66,7 @@ List of SVG files.
 
 ### dest
 
-*required*
+_required_
 
 Type: `string`
 
@@ -102,28 +107,28 @@ Generator uses handlebars templates.
 
 Template receives options from `options.templateOptions` along with the following options:
 
-* fontName
-* src `string` &ndash; Value of the `src` property for `@font-face`.
-* codepoints `object` &ndash; Codepoints of icons in hex format.
+- fontName
+- src `string` &ndash; Value of the `src` property for `@font-face`.
+- codepoints `object` &ndash; Codepoints of icons in hex format.
 
 Paths of default templates are stored in the `webfontsGenerator.templates` object.
 
-* `webfontsGenerator.templates.css` &ndash; Default CSS template path.
-	<br>
-	It generates classes with names based on values from `options.templateOptions`.
+- `webfontsGenerator.templates.css` &ndash; Default CSS template path.
+  <br>
+  It generates classes with names based on values from `options.templateOptions`.
 
-* `webfontsGenerator.templates.scss` &ndash; Default SCSS template path.
-	<br>
-	It generates mixin `webfont-icon` to add icon styles.
-	<br>
-	It is safe to use multiple generated files with mixins together.
-	<br>
-	Example of use:
+- `webfontsGenerator.templates.scss` &ndash; Default SCSS template path.
+  <br>
+  It generates mixin `webfont-icon` to add icon styles.
+  <br>
+  It is safe to use multiple generated files with mixins together.
+  <br>
+  Example of use:
 
-	```
-	@import 'iconfont';
-	.icon { @include webfont-icon('icon'); }
-	```
+  ```
+  @import 'iconfont';
+  .icon { @include webfont-icon('icon'); }
+  ```
 
 ### cssFontsPath
 
@@ -160,10 +165,10 @@ Generator uses handlebars templates.
 
 Template receives options from `options.templateOptions` along with the following options:
 
-* fontName
-* styles `string` &ndash; Styles generated with default CSS template.
-	(`cssFontsPath` is chaged to relative path from `htmlDest` to `dest`)
-* names `array.<string>` &ndash; Names of icons.
+- fontName
+- styles `string` &ndash; Styles generated with default CSS template.
+  (`cssFontsPath` is chaged to relative path from `htmlDest` to `dest`)
+- names `array.<string>` &ndash; Names of icons.
 
 ### templateOptions
 
@@ -172,6 +177,7 @@ Type: `object`
 Additional options for CSS & HTML templates, that extends default options.
 
 Default options are:
+
 ```js
 {
 	classPrefix: 'icon-',
@@ -231,6 +237,7 @@ Type: `object`
 Specific per format arbitrary options to pass to the generator
 
 format and matching generator:
+
 - `svg` - [svgicons2svgfont](https://github.com/nfroidure/svgicons2svgfont).
 - `ttf` - [svg2ttf](https://github.com/fontello/svg2ttf).
 - `woff2` - [ttf2woff2](https://github.com/nfroidure/ttf2woff2).
@@ -238,15 +245,18 @@ format and matching generator:
 - `eot` - [ttf2eot](https://github.com/fontello/ttf2eot).
 
 ```js
-webfontsGenerator({
-  // options
-  formatOptions: {
-  	// options to pass specifically to the ttf generator
-  	ttf: {
-  		ts: 1451512800000
-  	}
-  }
-}, function(error, result) {})
+webfontsGenerator(
+  {
+    // options
+    formatOptions: {
+      // options to pass specifically to the ttf generator
+      ttf: {
+        ts: 1451512800000,
+      },
+    },
+  },
+  function (error, result) {}
+)
 ```
 
 ### writeFiles
@@ -256,19 +266,22 @@ Type: `boolean`
 Default: `true`
 
 It is possible to not create files and get generated fonts in object
- to write them to files later.
+to write them to files later.
 <br>
 Also results object will have function `generateCss([urls])`
 where `urls` is an object with future fonts urls.
 
 ```js
-webfontsGenerator({
-  // options
-  writeFiles: false
-}, function(error, result) {
-  // result.eot, result.ttf, etc - generated fonts
-  // result.generateCss(urls) - function to generate css
-})
+webfontsGenerator(
+  {
+    // options
+    writeFiles: false,
+  },
+  function (error, result) {
+    // result.eot, result.ttf, etc - generated fonts
+    // result.generateCss(urls) - function to generate css
+  }
+)
 ```
 
 ## License
